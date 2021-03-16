@@ -1,4 +1,4 @@
-import 'dart:html';
+import 'timer.dart';
 
 import 'package:flutter/material.dart';
 
@@ -57,17 +57,7 @@ class Home extends StatelessWidget {
               title: Text('Timer'),
               onTap: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (BuildContext context) {
-                  return Scaffold(
-                    appBar: AppBar(
-                      title: const Text('Hobby List'),
-                    ),
-                    body: const Center(
-                      child: Text('Demo Home Page for Hobby Hub Hobby Timer',
-                          style: TextStyle(fontSize: 30)),
-                    ),
-                  );
-                }));
+                    MaterialPageRoute(builder: (context) => TimerPage()));
               },
             ),
             //Fourms Page
