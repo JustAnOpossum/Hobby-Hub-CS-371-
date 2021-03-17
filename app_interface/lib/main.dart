@@ -1,4 +1,5 @@
 import 'timer.dart';
+import 'calendar.dart';
 
 import 'package:flutter/material.dart';
 
@@ -58,6 +59,15 @@ class Home extends StatelessWidget {
               onTap: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => TimerPage()));
+              },
+            ),
+            //Calendar Page
+            ListTile(
+              leading: Icon(Icons.calendar_today),
+              title: Text('Calendar'),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Calendar()));
               },
             ),
             //Fourms Page
