@@ -1,7 +1,8 @@
 import 'package:flutter/foundation.dart';
 
 class User {
-  final String userId;
+  int usernum;
+  final String userName;
   final String firstName;
   final String lastName;
   final String password;
@@ -9,7 +10,8 @@ class User {
   final DateTime dateJoined;
 
   User({
-    @required this.userId,
+    this.usernum = 0,
+    @required this.userName,
     @required this.firstName,
     @required this.lastName,
     @required this.password,

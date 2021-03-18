@@ -5,7 +5,7 @@ import '../models/user.dart';
 class Login extends StatefulWidget {
   final List<User> _users = [
     User(
-      userId: 'BobMan11',
+      userName: 'BobMan11',
       firstName: 'Robert',
       lastName: 'Manfield',
       password: 'iamreallycool2011',
@@ -16,6 +16,8 @@ class Login extends StatefulWidget {
   @override
   _LoginState createState() => _LoginState();
 }
+
+//implement successful character creation increases userid by 1
 
 class _LoginState extends State<Login> {
   @override
