@@ -6,6 +6,15 @@ class TimerPage extends StatefulWidget {
 }
 
 class _TimerPageState extends State<TimerPage> {
+  String _buttonText = "Start Timer";
+
+  //Called whenever the button is pressed
+  void _buttonPressed() {
+    setState(() {
+      _buttonText = "Helo";
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,7 +49,9 @@ class _TimerPageState extends State<TimerPage> {
               Container(
                 height: 20,
               ),
-              ElevatedButton(onPressed: () {}, child: Text('Start Timer')),
+              ElevatedButton(
+                  onPressed: () => _buttonPressed(),
+                  child: Text('$_buttonText')),
               Container(
                 height: 20,
               ),
