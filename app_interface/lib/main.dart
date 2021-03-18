@@ -1,9 +1,8 @@
-import 'timer.dart';
-import 'calendar.dart';
-
 import 'package:flutter/material.dart';
 
 import './widgets/login.dart';
+import './widgets/timer.dart';
+import './widgets/calendar.dart';
 
 void main() {
   runApp(MyApp());
