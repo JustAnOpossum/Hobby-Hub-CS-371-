@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import './widgets/login.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -64,6 +66,19 @@ class Home extends StatelessWidget {
                       child: Text('Demo Home Page for Hobby Hub Hobby Timer',
                           style: TextStyle(fontSize: 30)),
                     ),
+                  );
+                }));
+              },
+            ),
+            //Login
+            ListTile(
+              leading: Icon(Icons.login),
+              title: Text('Login Test'),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (BuildContext context) {
+                  return Column(
+                    children: <Widget>[Login()],
                   );
                 }));
               },

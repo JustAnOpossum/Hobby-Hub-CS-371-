@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 
 class NewUser extends StatelessWidget {
+  final Function addTx;
   final userNameController = TextEditingController();
   final fNameController = TextEditingController();
   final lNameController = TextEditingController();
   final passwordController = TextEditingController();
   final emailController = TextEditingController();
   final passCheckController = TextEditingController();
+
+  NewUser(this.addTx);
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +48,15 @@ class NewUser extends StatelessWidget {
               FlatButton(
                   child: Text('Create Account'),
                   textColor: Colors.blue,
-                  onPressed: () {})
+                  onPressed: () {
+                    addTx(
+                      userNameController.text,
+                      fNameController.text,
+                      lNameController.text,
+                      emailController.text,
+                      passCheckController.text,
+                    );
+                  })
             ]),
       ),
     );
