@@ -3,6 +3,8 @@ import 'calendar.dart';
 
 import 'package:flutter/material.dart';
 
+import './widgets/login.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -68,6 +70,19 @@ class Home extends StatelessWidget {
               onTap: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => Calendar()));
+              },
+            ),
+            //Login
+            ListTile(
+              leading: Icon(Icons.login),
+              title: Text('Login Test'),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (BuildContext context) {
+                  return Column(
+                    children: <Widget>[Login()],
+                  );
+                }));
               },
             ),
             //Fourms Page
