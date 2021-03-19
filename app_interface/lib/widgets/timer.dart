@@ -21,7 +21,7 @@ class TimerPage extends StatelessWidget {
                 height: 20,
               ),
               Text(
-                'This timer is can help you focus on your task at hand, try it out and see if you like it!',
+                'This timer is can help you focus by spacing out when you take a break to keep maximum concentration.',
                 style: TextStyle(fontSize: 20),
                 textAlign: TextAlign.center,
               ),
@@ -29,7 +29,27 @@ class TimerPage extends StatelessWidget {
                 height: 10,
               ),
               Text(
-                'A cycle is 30 minutes. 25 which you are practicing and 5 of resting. You do 4 cycles and then start again',
+                '1. Focus for 25 minutes.',
+                style: TextStyle(fontSize: 15),
+                textAlign: TextAlign.center,
+              ),
+              Text(
+                '2. Take a 5 minute break',
+                style: TextStyle(fontSize: 15),
+                textAlign: TextAlign.center,
+              ),
+              Text(
+                '3. Repeat step 1 and 2, 4 times.',
+                style: TextStyle(fontSize: 15),
+                textAlign: TextAlign.center,
+              ),
+              Text(
+                '4. Take a 20 minute long break.',
+                style: TextStyle(fontSize: 15),
+                textAlign: TextAlign.center,
+              ),
+              Text(
+                '5. Start at step 1 again.',
                 style: TextStyle(fontSize: 15),
                 textAlign: TextAlign.center,
               ),
@@ -58,6 +78,7 @@ class _TimerWidgetState extends State<TimerWidget> {
   int _longRestCount = 1;
   bool _inBreak = false;
   bool _inLongRest = false;
+  var _timerColor = Colors.orange;
 
   Timer _timer;
 
@@ -88,7 +109,6 @@ class _TimerWidgetState extends State<TimerWidget> {
 
       if (_timerMinute == 0 && _timerSecond == 0) {
         _stopTimer();
-        print(_inBreak);
         //If for checking to see if the count is at 4 and it is in break and currently not in a long rest
         if (_count == 2 && _inBreak && !_inLongRest) {
           _timerMinute = 20;
@@ -97,6 +117,7 @@ class _TimerWidgetState extends State<TimerWidget> {
           _count = _longRestCount;
           _longRestCount++;
           _inLongRest = true;
+          _timerColor = Colors.blue;
         } else {
           //Else for when it is not in long rest
           if (_inLongRest) {
@@ -105,16 +126,18 @@ class _TimerWidgetState extends State<TimerWidget> {
             _inLongRest = false;
           }
           if (_inBreak) {
-            _timerMinute = 5;
+            _timerMinute = 25;
             _timerSecond = 0;
             _inBreak = false;
             _count++;
             _currentMode = 'Practice';
+            _timerColor = Colors.orange;
           } else {
-            _timerMinute = 25;
+            _timerMinute = 5;
             _timerSecond = 0;
             _inBreak = true;
             _currentMode = 'Break';
+            _timerColor = Colors.green;
           }
         }
       }
@@ -155,6 +178,7 @@ class _TimerWidgetState extends State<TimerWidget> {
       _longRestCount = 1;
       _inBreak = false;
       _inLongRest = false;
+      _timerColor = Colors.orange;
     });
   }
 
@@ -178,7 +202,7 @@ class _TimerWidgetState extends State<TimerWidget> {
         ),
         Text(
           '$_timerMsg',
-          style: TextStyle(fontSize: 30, color: Colors.orange),
+          style: TextStyle(fontSize: 30, color: _timerColor),
         )
       ],
     );
