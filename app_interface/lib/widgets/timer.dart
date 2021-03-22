@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 
+import 'package:hobby_hub/main.dart';
+
 class TimerPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -184,8 +186,10 @@ class _TimerWidgetState extends State<TimerWidget> {
     return Column(
       children: [
         ElevatedButton(
-            onPressed: () => _timerButtonPressed(),
-            child: Text('$_mode $_currentMode $_count')),
+          onPressed: () => _timerButtonPressed(),
+          child: Text('$_mode $_currentMode $_count'),
+          style: ElevatedButton.styleFrom(primary: myTheme.accentColor),
+        ),
         ElevatedButton(
             style: ElevatedButton.styleFrom(primary: Colors.red),
             onPressed: () => _resetButtonPressed(),

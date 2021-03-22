@@ -8,15 +8,16 @@ void main() {
   runApp(MyApp());
 }
 
+var myTheme =
+    ThemeData(primaryColor: Color(0xFFAF5D63), accentColor: Color(0xFFD5896F));
+
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Hobby Hub',
-      theme: ThemeData(
-        primaryColor: Color(0xFFAF5D63),
-      ),
+      theme: myTheme,
       home: Home(),
     );
   }
@@ -48,7 +49,11 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Hobby Hub'),
+        title: const Text(
+          'Hobby Hub',
+          style: TextStyle(color: Colors.black),
+        ),
+        backgroundColor: Colors.white,
       ),
       //Menu for the diffrent Menu options
       drawer: Drawer(
