@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Hobby Hub',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: Color(0xFFAF5D63),
       ),
       home: Home(),
     );
@@ -23,7 +23,27 @@ class MyApp extends StatelessWidget {
 }
 
 //Main Home Page for hobby hub
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  int _currentIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
+
+  static List<Widget> _widgetOptions = <Widget>[
+    Text(
+      'Demo Home Page',
+    ),
+    TimerPage(),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -106,9 +126,16 @@ class Home extends StatelessWidget {
           ],
         ),
       ),
-      body: const Center(
-        child: Text('Demo Home Page for Hobby Hub',
-            style: TextStyle(fontSize: 30)),
+      body: Center(
+        child: _widgetOptions.elementAt(_currentIndex),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        items: [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.lock_clock), label: 'Timer')
+        ],
+        onTap: _onItemTapped,
       ),
     );
   }
