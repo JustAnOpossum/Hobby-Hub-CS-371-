@@ -16,9 +16,6 @@ void main() async {
   runApp(MyApp());
 }
 
-var myTheme =
-    ThemeData(primaryColor: Color(0xFFAF5D63), accentColor: Color(0xFFD5896F));
-
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

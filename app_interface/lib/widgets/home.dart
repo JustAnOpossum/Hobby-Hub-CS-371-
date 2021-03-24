@@ -3,10 +3,7 @@ import 'package:hobby_hub/widgets/auth.dart';
 
 import '../widgets/timer.dart';
 import '../widgets/calendar.dart';
-import '../widgets/calendar.dart';
-
-var myTheme =
-    ThemeData(primaryColor: Color(0xFFAF5D63), accentColor: Color(0xFFD5896F));
+import '../theme.dart';
 
 void main() {
   runApp(MyApp());
@@ -25,7 +22,6 @@ class MyApp extends StatelessWidget {
 }
 
 //Main Home Page for hobby hub
-
 class Home extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();
@@ -68,13 +64,11 @@ class _HomeState extends State<Home> {
           //Menu for the diffrent Menu options
         ],
       ),
-      drawer: Drawer(
-          //@@ -106,9 +131,16 @@ class Home extends StatelessWidget {
-          ),
       body: Center(
         child: _widgetOptions.elementAt(_currentIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: myTheme.primaryColor,
         currentIndex: _currentIndex,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
