@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'package:audioplayers/audio_cache.dart';
 
 import '../theme.dart';
 
@@ -104,6 +105,7 @@ class _TimerWidgetState extends State<TimerWidget> {
 
       if (_timerMinute == 0 && _timerSecond == 0) {
         _stopTimer();
+        _playAudio();
         //If for checking to see if the count is at 4 and it is in break and currently not in a long rest
         if (_count == 2 && _inBreak && !_inLongRest) {
           _timerMinute = 20;
@@ -175,6 +177,11 @@ class _TimerWidgetState extends State<TimerWidget> {
       _inLongRest = false;
       _timerColor = Colors.orange;
     });
+  }
+
+  void _playAudio() {
+    AudioCache cache = new AudioCache();
+    cache.play("alarm.mp3");
   }
 
   @override
