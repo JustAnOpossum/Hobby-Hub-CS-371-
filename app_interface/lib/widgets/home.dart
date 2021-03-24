@@ -29,19 +29,26 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int _currentIndex = 0;
+  String _currentAppBarName = "Home";
 
+  //Called when an item is tapped on the bottom nav bar
   void _onItemTapped(int index) {
     setState(() {
       _currentIndex = index;
+      _currentAppBarName = _appBarNames[index];
     });
   }
 
+  //List of widgets for the bottom bar
   static List<Widget> _widgetOptions = <Widget>[
     Text(
       'Demo Home Page',
     ),
     TimerPage(),
+    Calendar()
   ];
+
+  static List<String> _appBarNames = <String>["Home", "Timer", "Calendar"];
 
   final AuthService _auth = AuthService();
   @override
@@ -49,8 +56,8 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
-        title: const Text(
-          'Hobby Hub',
+        title: Text(
+          '$_currentAppBarName',
           style: TextStyle(color: Colors.black),
         ),
         backgroundColor: Colors.white,
@@ -72,7 +79,9 @@ class _HomeState extends State<Home> {
         currentIndex: _currentIndex,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.lock_clock), label: 'Timer')
+          BottomNavigationBarItem(icon: Icon(Icons.timer), label: 'Timer'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.calendar_today_outlined), label: 'Calendar')
         ],
         onTap: _onItemTapped,
       ),

@@ -12,10 +12,6 @@ class TimerPage extends StatelessWidget {
       margin: EdgeInsets.all(10),
       child: Column(
         children: [
-          Text(
-            'Pomodoro Timer',
-            style: TextStyle(fontSize: 40),
-          ),
           Container(
             height: 20,
           ),
