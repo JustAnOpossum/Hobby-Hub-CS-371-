@@ -71,8 +71,9 @@ class _HomeState extends State<Home> {
           //Menu for the diffrent Menu options
         ],
       ),
-      body: Center(
-        child: _widgetOptions.elementAt(_currentIndex),
+      body: IndexedStack(
+        index: _currentIndex,
+        children: _widgetOptions,
       ),
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: myTheme.primaryColor,

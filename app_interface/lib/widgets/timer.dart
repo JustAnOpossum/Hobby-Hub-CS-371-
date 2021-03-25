@@ -8,54 +8,55 @@ class TimerPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Colors.white,
         body: Center(
             child: Container(
-      margin: EdgeInsets.all(10),
-      child: Column(
-        children: [
-          Container(
-            height: 20,
+          margin: EdgeInsets.all(10),
+          child: Column(
+            children: [
+              Container(
+                height: 20,
+              ),
+              Text(
+                'This timer is can help you focus by spacing out when you take a break to keep maximum concentration.',
+                style: TextStyle(fontSize: 20),
+                textAlign: TextAlign.center,
+              ),
+              Container(
+                height: 10,
+              ),
+              Text(
+                '1. Focus for 25 minutes.',
+                style: TextStyle(fontSize: 15),
+                textAlign: TextAlign.center,
+              ),
+              Text(
+                '2. Take a 5 minute break',
+                style: TextStyle(fontSize: 15),
+                textAlign: TextAlign.center,
+              ),
+              Text(
+                '3. Repeat step 1 and 2, 4 times.',
+                style: TextStyle(fontSize: 15),
+                textAlign: TextAlign.center,
+              ),
+              Text(
+                '4. Take a 20 minute long break.',
+                style: TextStyle(fontSize: 15),
+                textAlign: TextAlign.center,
+              ),
+              Text(
+                '5. Start at step 1 again.',
+                style: TextStyle(fontSize: 15),
+                textAlign: TextAlign.center,
+              ),
+              Container(
+                height: 20,
+              ),
+              TimerWidget()
+            ],
           ),
-          Text(
-            'This timer is can help you focus by spacing out when you take a break to keep maximum concentration.',
-            style: TextStyle(fontSize: 20),
-            textAlign: TextAlign.center,
-          ),
-          Container(
-            height: 10,
-          ),
-          Text(
-            '1. Focus for 25 minutes.',
-            style: TextStyle(fontSize: 15),
-            textAlign: TextAlign.center,
-          ),
-          Text(
-            '2. Take a 5 minute break',
-            style: TextStyle(fontSize: 15),
-            textAlign: TextAlign.center,
-          ),
-          Text(
-            '3. Repeat step 1 and 2, 4 times.',
-            style: TextStyle(fontSize: 15),
-            textAlign: TextAlign.center,
-          ),
-          Text(
-            '4. Take a 20 minute long break.',
-            style: TextStyle(fontSize: 15),
-            textAlign: TextAlign.center,
-          ),
-          Text(
-            '5. Start at step 1 again.',
-            style: TextStyle(fontSize: 15),
-            textAlign: TextAlign.center,
-          ),
-          Container(
-            height: 20,
-          ),
-          TimerWidget()
-        ],
-      ),
-    )));
+        )));
   }
 }
 
