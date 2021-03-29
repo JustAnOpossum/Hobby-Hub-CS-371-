@@ -3,9 +3,6 @@ import 'package:hobby_hub/widgets/auth.dart';
 import 'package:hobby_hub/widgets/wrapper.dart';
 import 'package:provider/provider.dart';
 
-import './widgets/timer.dart';
-import './widgets/calendar.dart';
-
 import 'package:firebase_core/firebase_core.dart';
 
 import 'models/userData.dart';
