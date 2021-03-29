@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:hobby_hub/shared/constants.dart';
 import 'package:hobby_hub/widgets/auth.dart';
 
-class SignIn extends StatefulWidget {
+class Register extends StatefulWidget {
   final Function toggleView;
-  SignIn({this.toggleView});
+  Register({this.toggleView});
   @override
-  _SignInState createState() => _SignInState();
+  _RegisterState createState() => _RegisterState();
 }
 
-class _SignInState extends State<SignIn> {
+class _RegisterState extends State<Register> {
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
+
   String email = '';
   String password = '';
   String error = '';
@@ -22,11 +23,11 @@ class _SignInState extends State<SignIn> {
       appBar: AppBar(
           backgroundColor: Color(0xFFAF5D63),
           elevation: 0.0,
-          title: Text('Sign into Hobby Hub'),
+          title: Text('Register an Account'),
           actions: <Widget>[
             FlatButton.icon(
                 icon: Icon(Icons.person),
-                label: Text('Register'),
+                label: Text('Sign In'),
                 onPressed: () {
                   widget.toggleView();
                 })
@@ -48,10 +49,10 @@ class _SignInState extends State<SignIn> {
                 TextFormField(
                   decoration:
                       textInputDecoration.copyWith(hintText: 'Password'),
-                  obscureText: true,
                   validator: (val) => val.length < 6
-                      ? 'Enter a password with 6+ characters'
+                      ? 'Enter a password with a length of 6+'
                       : null,
+                  obscureText: true,
                   onChanged: (val) {
                     setState(() => password = val);
                   },
@@ -62,16 +63,15 @@ class _SignInState extends State<SignIn> {
                 RaisedButton(
                   color: Color(0xFFAF5D63),
                   child: Text(
-                    'Sign In',
+                    'Register',
                     style: TextStyle(color: Colors.white),
                   ),
                   onPressed: () async {
                     if (_formKey.currentState.validate()) {
-                      dynamic result = await _auth.signInWithEmailAndPassword(
+                      dynamic result = await _auth.registerWithEmailAndPassword(
                           email, password);
                       if (result == null) {
-                        setState(() => error =
-                            'Could not sign in, check your credentials and try again.');
+                        setState(() => error = 'Please supply valid email');
                       }
                     }
                   },
