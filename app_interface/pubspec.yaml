@@ -22,7 +22,7 @@ environment:
 
 dependencies:
   flutter_calendar_carousel:
-  audioplayers:
+  flutter_local_notifications:
   flutter:
     sdk: flutter
   firebase_core: ^0.7.0
@@ -47,9 +47,6 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
-
-  assets:
-    - assets/alarm.mp3
 
   # To add assets to your application, add an assets section, like this:
   # assets:

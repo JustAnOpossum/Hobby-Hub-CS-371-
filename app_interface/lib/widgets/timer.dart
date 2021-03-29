@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'package:audioplayers/audio_cache.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import '../theme.dart';
 
@@ -66,6 +66,8 @@ class TimerWidget extends StatefulWidget {
 }
 
 class _TimerWidgetState extends State<TimerWidget> {
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+
   String _currentMode = "Practice";
   String _timerMsg = "25:00";
   String _mode = "Start";
@@ -83,6 +85,20 @@ class _TimerWidgetState extends State<TimerWidget> {
   void dispose() {
     _stopTimer();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings('app_icon');
+    final InitializationSettings initializationSettings =
+        InitializationSettings(android: initializationSettingsAndroid);
+    flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+    );
+
+    super.initState();
   }
 
   //Timer object to track how long the user has been practicing.
@@ -106,7 +122,6 @@ class _TimerWidgetState extends State<TimerWidget> {
 
       if (_timerMinute == 0 && _timerSecond == 0) {
         _stopTimer();
-        _playAudio();
         //If for checking to see if the count is at 4 and it is in break and currently not in a long rest
         if (_count == 2 && _inBreak && !_inLongRest) {
           _timerMinute = 20;
@@ -138,6 +153,8 @@ class _TimerWidgetState extends State<TimerWidget> {
             _timerColor = Colors.green;
           }
         }
+        //Sends the notification
+        _sendNotfication();
       }
 
       if (_timerSecond == -1) {
@@ -180,9 +197,20 @@ class _TimerWidgetState extends State<TimerWidget> {
     });
   }
 
-  void _playAudio() {
-    AudioCache cache = new AudioCache();
-    cache.play("alarm.mp3");
+  void _sendNotfication() async {
+    //Android specific for now
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails('3', 'Timer2', 'Timer to track your hobbies',
+            importance: Importance.max,
+            priority: Priority.high,
+            showWhen: false,
+            sound: RawResourceAndroidNotificationSound('alarm'));
+    const NotificationDetails platformChannelSpecifics =
+        NotificationDetails(android: androidPlatformChannelSpecifics);
+    //Sends notification
+    await flutterLocalNotificationsPlugin.show(0, 'Timer Done',
+        '$_currentMode $_count Completed', platformChannelSpecifics,
+        payload: 'item x');
   }
 
   @override
@@ -198,6 +226,10 @@ class _TimerWidgetState extends State<TimerWidget> {
             style: ElevatedButton.styleFrom(primary: Colors.red),
             onPressed: () => _resetButtonPressed(),
             child: Text('Reset Timer')),
+        ElevatedButton(
+            style: ElevatedButton.styleFrom(primary: Colors.red),
+            onPressed: () => _sendNotfication(),
+            child: Text('Test Notification')),
         Container(
           height: 20,
         ),
