@@ -122,6 +122,8 @@ class _TimerWidgetState extends State<TimerWidget> {
 
       if (_timerMinute == 0 && _timerSecond == 0) {
         _stopTimer();
+        //Sends the notification
+        _sendNotfication();
         //If for checking to see if the count is at 4 and it is in break and currently not in a long rest
         if (_count == 2 && _inBreak && !_inLongRest) {
           _timerMinute = 20;
@@ -153,8 +155,6 @@ class _TimerWidgetState extends State<TimerWidget> {
             _timerColor = Colors.green;
           }
         }
-        //Sends the notification
-        _sendNotfication();
       }
 
       if (_timerSecond == -1) {
@@ -200,7 +200,7 @@ class _TimerWidgetState extends State<TimerWidget> {
   void _sendNotfication() async {
     //Android specific for now
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
-        AndroidNotificationDetails('3', 'Timer2', 'Timer to track your hobbies',
+        AndroidNotificationDetails('3', 'Timer', 'Timer to track your hobbies',
             importance: Importance.max,
             priority: Priority.high,
             showWhen: false,
