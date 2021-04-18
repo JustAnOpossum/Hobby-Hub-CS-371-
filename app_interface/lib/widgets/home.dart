@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hobby_hub/widgets/auth.dart';
 
+import '../widgets/metronome.dart';
 import '../widgets/timer.dart';
 import '../widgets/calendar.dart';
 import '../theme.dart';
+import '../shared/loading.dart';
 
 void main() {
   runApp(MyApp());
@@ -30,6 +32,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int _currentIndex = 0;
   String _currentAppBarName = "Home";
+  bool loading = false;
 
   //Called when an item is tapped on the bottom nav bar
   void _onItemTapped(int index) {
@@ -45,47 +48,62 @@ class _HomeState extends State<Home> {
       'Demo Home Page',
     ),
     TimerPage(),
-    Calendar()
+    Calendar(),
+    MetronomeControl(),
   ];
 
-  static List<String> _appBarNames = <String>["Home", "Timer", "Calendar"];
+  static List<String> _appBarNames = <String>[
+    "Home",
+    "Timer",
+    "Calendar",
+    "Metronome"
+  ];
 
   final AuthService _auth = AuthService();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0.0,
-        title: Text(
-          '$_currentAppBarName',
-          style: TextStyle(color: Colors.black),
-        ),
-        backgroundColor: Colors.white,
-        actions: <Widget>[
-          FlatButton.icon(
-              icon: Icon(Icons.person),
-              label: Text('Logout'),
-              onPressed: () async {
-                await _auth.signOut();
-              }),
-          //Menu for the diffrent Menu options
-        ],
-      ),
-      body: IndexedStack(
-        index: _currentIndex,
-        children: _widgetOptions,
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: myTheme.primaryColor,
-        currentIndex: _currentIndex,
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.timer), label: 'Timer'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.calendar_today_outlined), label: 'Calendar')
-        ],
-        onTap: _onItemTapped,
-      ),
-    );
+    return loading
+        ? Loading()
+        : Scaffold(
+            appBar: AppBar(
+              elevation: 0.0,
+              title: Text(
+                '$_currentAppBarName',
+                style: TextStyle(color: Colors.black),
+              ),
+              backgroundColor: Colors.white,
+              actions: <Widget>[
+                FlatButton.icon(
+                    icon: Icon(Icons.person),
+                    label: Text('Logout'),
+                    onPressed: () async {
+                      setState(() {
+                        loading = true;
+                      });
+                      await _auth.signOut();
+                    }),
+                //Menu for the diffrent Menu options
+              ],
+            ),
+            body: IndexedStack(
+              index: _currentIndex,
+              children: _widgetOptions,
+            ),
+            bottomNavigationBar: BottomNavigationBar(
+              selectedItemColor: myTheme.primaryColor,
+              currentIndex: _currentIndex,
+              items: [
+                BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.timer), label: 'Timer'),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.calendar_today_outlined),
+                    label: 'Calendar'),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.music_note), label: 'Metronome'),
+              ],
+              onTap: _onItemTapped,
+            ),
+          );
   }
 }
