@@ -12,19 +12,32 @@ class Calendar extends StatefulWidget {
 class _CalendarState extends State<Calendar> {
   DateTime _currentDate = DateTime.now();
 
-  //List of events for the calendar
-  EventList<Event> _dateMap = new EventList<Event>(events: {
-    new DateTime(2021, 4, 4): [
-      new Event(date: new DateTime(2021, 4, 4), title: 'Test', id: 0)
-    ],
-    new DateTime(2021, 4, 5): [
-      new Event(date: new DateTime(2021, 4, 5), title: 'Test2', id: 1),
-      new Event(date: new DateTime(2021, 4, 5), title: 'Test3', id: 2),
-    ],
-  });
+  EventList<Event> _markedDateMap = new EventList<Event>(
+    events: {
+      new DateTime(2021, 4, 15): [
+        new Event(
+          date: new DateTime(2021, 4, 15),
+          title: 'Hobby 1',
+        ),
+        new Event(
+          date: new DateTime(2021, 4, 15),
+          title: 'Hobby 2',
+        ),
+        new Event(
+          date: new DateTime(2021, 4, 15),
+          title: 'Hobby 3',
+        ),
+      ],
+      new DateTime(2021, 4, 14): [
+        new Event(
+          date: new DateTime(2021, 4, 14),
+          title: 'Hobby 4',
+        ),
+      ],
+    },
+  );
 
-  //Times for the events
-  List<int> _eventTimes = [1, 2, 3];
+  var eventTimes = [1, 2, 3];
 
   @override
   Widget build(BuildContext context) {
@@ -38,27 +51,29 @@ class _CalendarState extends State<Calendar> {
             //Goes through the events and adds them to the list
             events.forEach((event) {
               String title = event.title;
-              int hours = _eventTimes[event.id];
+              int hours = 3;
               _modalList.add(new Text(
-                '$title: $hours',
+                '$title: $hours Hours',
                 style: TextStyle(fontSize: 40),
               ));
             });
             _currentDate = date;
             //When the event is clicked, shows a modal with the hours practiced
-            showModalBottomSheet(
-                context: context,
-                builder: (BuildContext context) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: _modalList,
-                  );
-                });
+            if (_modalList.length != 0) {
+              showModalBottomSheet(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: _modalList,
+                    );
+                  });
+            }
           });
         },
         selectedDateTime: _currentDate,
-        markedDatesMap: _dateMap,
+        markedDatesMap: _markedDateMap,
       ),
     );
   }

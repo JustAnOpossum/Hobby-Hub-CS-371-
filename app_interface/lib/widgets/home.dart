@@ -6,6 +6,7 @@ import '../widgets/timer.dart';
 import '../widgets/calendar.dart';
 import '../theme.dart';
 import '../shared/loading.dart';
+import '../widgets/homePage.dart';
 
 void main() {
   runApp(MyApp());
@@ -44,9 +45,7 @@ class _HomeState extends State<Home> {
 
   //List of widgets for the bottom bar
   static List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Demo Home Page',
-    ),
+    HomePage(),
     TimerPage(),
     Calendar(),
     MetronomeControl(),

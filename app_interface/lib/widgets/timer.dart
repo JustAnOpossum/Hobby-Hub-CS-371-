@@ -79,6 +79,8 @@ class _TimerWidgetState extends State<TimerWidget> {
   bool _inLongRest = false;
   var _timerColor = Colors.orange;
 
+  int _timeTracked = 0;
+
   Timer _timer;
 
   @override
@@ -119,6 +121,7 @@ class _TimerWidgetState extends State<TimerWidget> {
     setState(() {
       //Logic to handle when the timer is at 00:00
       _timerSecond--;
+      _timeTracked++;
 
       if (_timerMinute == 0 && _timerSecond == 0) {
         _stopTimer();
@@ -194,6 +197,7 @@ class _TimerWidgetState extends State<TimerWidget> {
       _inBreak = false;
       _inLongRest = false;
       _timerColor = Colors.orange;
+      _timeTracked = 0;
     });
   }
 
