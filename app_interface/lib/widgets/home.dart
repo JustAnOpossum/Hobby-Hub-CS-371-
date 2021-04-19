@@ -90,6 +90,7 @@ class _HomeState extends State<Home> {
             ),
             bottomNavigationBar: BottomNavigationBar(
               selectedItemColor: myTheme.primaryColor,
+              unselectedItemColor: myTheme.accentColor,
               currentIndex: _currentIndex,
               items: [
                 BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
