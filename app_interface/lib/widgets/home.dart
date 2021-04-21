@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hobby_hub/widgets/auth.dart';
+import 'package:provider/provider.dart';
 
 import '../widgets/metronome.dart';
 import '../widgets/timer.dart';
@@ -7,6 +8,7 @@ import '../widgets/calendar.dart';
 import '../theme.dart';
 import '../shared/loading.dart';
 import '../widgets/homePage.dart';
+import './hobbyClass.dart';
 
 void main() {
   runApp(MyApp());
@@ -34,6 +36,7 @@ class _HomeState extends State<Home> {
   int _currentIndex = 0;
   String _currentAppBarName = "Home";
   bool loading = false;
+  String selectedHobby = "Hobby1";
 
   //Called when an item is tapped on the bottom nav bar
   void _onItemTapped(int index) {
@@ -84,10 +87,12 @@ class _HomeState extends State<Home> {
                 //Menu for the diffrent Menu options
               ],
             ),
-            body: IndexedStack(
-              index: _currentIndex,
-              children: _widgetOptions,
-            ),
+            body: ChangeNotifierProvider(
+                create: (_) => CurrentHobby(),
+                child: IndexedStack(
+                  index: _currentIndex,
+                  children: _widgetOptions,
+                )),
             bottomNavigationBar: BottomNavigationBar(
               selectedItemColor: myTheme.primaryColor,
               unselectedItemColor: myTheme.accentColor,

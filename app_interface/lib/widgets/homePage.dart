@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import './hobbyClass.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -6,14 +8,16 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String _currentHobby = "Hobby1";
-
   @override
   Widget build(BuildContext context) {
+    final hobbyState = Provider.of<CurrentHobby>(context);
+    String _hobbyName = hobbyState.getHobby;
+
     return Scaffold(
       body: Center(
           child: Column(
         children: [
+          //Card for selecting the hobbies
           Card(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -22,13 +26,14 @@ class _HomePageState extends State<HomePage> {
                   leading: Icon(Icons.check_circle),
                   title: Text('Select Hobby'),
                   subtitle: Text(
-                      'Choose what hobby you are working on.\nYou are currently working on $_currentHobby'),
+                      'Choose what hobby you are working on.\nYou are currently working on $_hobbyName'),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
+                    //Dropdown button to selected the actual hobby
                     DropdownButton(
-                      value: _currentHobby,
+                      value: hobbyState.getHobby,
                       items: <String>['Hobby1', 'Hobby2', 'Hobby3']
                           .map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
@@ -36,9 +41,10 @@ class _HomePageState extends State<HomePage> {
                           child: Text(value),
                         );
                       }).toList(),
+                      // Called when the user selects a new hobby
                       onChanged: (String tapped) {
                         setState(() {
-                          _currentHobby = tapped;
+                          hobbyState.updateHobby(tapped);
                         });
                       },
                     )

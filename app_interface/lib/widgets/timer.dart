@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:provider/provider.dart';
+import './hobbyClass.dart';
 
 import '../theme.dart';
 
@@ -219,6 +221,8 @@ class _TimerWidgetState extends State<TimerWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final hobbyState = Provider.of<CurrentHobby>(context);
+
     return Column(
       children: [
         ElevatedButton(
