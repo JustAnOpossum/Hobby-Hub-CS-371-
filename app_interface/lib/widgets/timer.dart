@@ -221,7 +221,7 @@ class _TimerWidgetState extends State<TimerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final hobbyState = Provider.of<CurrentHobby>(context);
+    final hobbyState = Provider.of<HobbyInfo>(context);
 
     return Column(
       children: [

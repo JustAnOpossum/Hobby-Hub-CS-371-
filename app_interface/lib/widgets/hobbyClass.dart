@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class CurrentHobby extends ChangeNotifier {
+class HobbyInfo extends ChangeNotifier {
   String _currentHobby = "Hobby1";
 
   String get getHobby {

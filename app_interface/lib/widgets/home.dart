@@ -88,7 +88,7 @@ class _HomeState extends State<Home> {
               ],
             ),
             body: ChangeNotifierProvider(
-                create: (_) => CurrentHobby(),
+                create: (_) => HobbyInfo(),
                 child: IndexedStack(
                   index: _currentIndex,
                   children: _widgetOptions,

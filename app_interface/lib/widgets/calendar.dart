@@ -3,6 +3,8 @@ import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
     show CalendarCarousel;
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/classes/event_list.dart';
+import 'package:provider/provider.dart';
+import './hobbyClass.dart';
 
 class Calendar extends StatefulWidget {
   @override
@@ -41,6 +43,8 @@ class _CalendarState extends State<Calendar> {
 
   @override
   Widget build(BuildContext context) {
+    final hobbyState = Provider.of<HobbyInfo>(context);
+    print('called');
     return Scaffold(
       backgroundColor: Colors.white,
       body: CalendarCarousel<Event>(

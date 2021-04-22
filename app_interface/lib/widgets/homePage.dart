@@ -10,8 +10,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    final hobbyState = Provider.of<CurrentHobby>(context);
-    String _hobbyName = hobbyState.getHobby;
+    final hobbyInfo = Provider.of<HobbyInfo>(context);
+    String _hobbyName = hobbyInfo.getHobby;
 
     return Scaffold(
       body: Center(
@@ -33,7 +33,7 @@ class _HomePageState extends State<HomePage> {
                   children: <Widget>[
                     //Dropdown button to selected the actual hobby
                     DropdownButton(
-                      value: hobbyState.getHobby,
+                      value: hobbyInfo.getHobby,
                       items: <String>['Hobby1', 'Hobby2', 'Hobby3']
                           .map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
@@ -44,7 +44,7 @@ class _HomePageState extends State<HomePage> {
                       // Called when the user selects a new hobby
                       onChanged: (String tapped) {
                         setState(() {
-                          hobbyState.updateHobby(tapped);
+                          hobbyInfo.updateHobby(tapped);
                         });
                       },
                     )
