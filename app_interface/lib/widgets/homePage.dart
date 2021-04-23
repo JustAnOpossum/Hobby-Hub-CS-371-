@@ -34,7 +34,7 @@ class _HomePageState extends State<HomePage> {
                     //Dropdown button to selected the actual hobby
                     DropdownButton(
                       value: hobbyInfo.getHobby,
-                      items: <String>['Hobby1', 'Hobby2', 'Hobby3']
+                      items: hobbyInfo.getAllHobbies
                           .map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,

@@ -80,6 +80,7 @@ class _TimerWidgetState extends State<TimerWidget> {
   bool _inBreak = false;
   bool _inLongRest = false;
   var _timerColor = Colors.orange;
+  HobbyInfo hobbyState;
 
   int _timeTracked = 0;
 
@@ -176,6 +177,9 @@ class _TimerWidgetState extends State<TimerWidget> {
   //Stops the timer and destroys the object
   void _stopTimer() {
     if (_timer != null) {
+      var today = DateTime.now();
+      hobbyState.updateEvent(new DateTime(today.year, today.month, today.day),
+          _timeTracked / 60 / 60);
       _timer.cancel();
       _timer = null;
       setState(() {
@@ -221,7 +225,7 @@ class _TimerWidgetState extends State<TimerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final hobbyState = Provider.of<HobbyInfo>(context);
+    hobbyState = Provider.of<HobbyInfo>(context);
 
     return Column(
       children: [
