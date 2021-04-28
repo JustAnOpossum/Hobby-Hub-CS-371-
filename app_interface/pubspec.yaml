@@ -1,5 +1,5 @@
 name: hobby_hub
-description: A new Flutter project.
+description: App to track your progress in hobbies.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -24,6 +24,7 @@ dependencies:
   flutter_calendar_carousel:
   flutter_local_notifications:
   flutter_launcher_icons:
+  flutter_native_splash:
   flutter:
     sdk: flutter
   firebase_core: ^0.7.0
@@ -88,3 +89,7 @@ flutter_icons:
   adaptive_icon_foreground: "assets/adaptive_icon_foreground.png"
   adaptive_icon_background:  "#D5896F"
   remove_alpha_ios: true
+
+flutter_native_splash:
+  color: "#D5896F"
+  image: "assets/adaptive_icon_foreground.png"
