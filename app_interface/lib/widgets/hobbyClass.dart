@@ -10,25 +10,112 @@ class DatabaseEvent {
   int year;
   double hours;
   String name;
+  int id;
 
-  DatabaseEvent(
-      int newMonth, int newDay, int newYear, double newHours, String newName) {
+  DatabaseEvent(int newMonth, int newDay, int newYear, double newHours,
+      String newName, int newID) {
     month = newMonth;
     day = newDay;
     year = newYear;
     hours = newHours;
     name = newName;
+    id = newID;
   }
 
-  Map toJson() =>
-      {'month': month, 'day': day, 'year': year, 'hours': hours, 'name': name};
+  Map toJson() => {
+        'month': month,
+        'day': day,
+        'year': year,
+        'hours': hours,
+        'name': name,
+        'id': id
+      };
 
   DatabaseEvent.fromJson(Map inputJson)
       : month = inputJson['month'],
         day = inputJson['day'],
         year = inputJson['year'],
         hours = inputJson['hours'],
-        name = inputJson['name'];
+        name = inputJson['name'],
+        id = inputJson['id'];
+}
+
+class DatabaseEvents {
+  List<DatabaseEvent> _allEvents = [];
+  String _currentHobby;
+  EventList<Event> _calendarEvents = new EventList<Event>();
+  Map<int, double> _eventTimes;
+
+  EventList<Event> get calendarEvents {
+    return _calendarEvents;
+  }
+
+  Map<int, double> get eventTimes {
+    return _eventTimes;
+  }
+
+  DatabaseEvents(String hobby) {
+    _currentHobby = hobby;
+    //Load all events from database matching _currentHobby and store them in _allEvents
+    //Mock data for now
+    _allEvents.add(new DatabaseEvent(5, 3, 2021, 5, "Hobby1", 0));
+  }
+
+  void _saveEvents() {
+    //Save the list _allEvents back to the databse
+  }
+
+  void createEvent(DateTime date, double hours) {
+    DatabaseEvent _newEvent = new DatabaseEvent(date.month, date.day, date.year,
+        hours, _currentHobby, _allEvents[_allEvents.length].id + 1);
+    _allEvents.add(_newEvent);
+
+    _saveEvents();
+    _createCalendarEvents();
+  }
+
+  void updateEvent(int id, double newTime) {
+    _allEvents.forEach((element) {
+      if (element.id == id) {
+        element.hours = newTime;
+      }
+    });
+
+    _saveEvents();
+    _createCalendarEvents();
+  }
+
+  void deleteEvent(int id) {
+    _allEvents.forEach((element) {
+      if (element.id == id) {
+        _allEvents.remove(element);
+      }
+    });
+
+    _saveEvents();
+    _createCalendarEvents();
+  }
+
+  void _createCalendarEvents() {
+    _calendarEvents = new EventList<Event>();
+    _allEvents.forEach((element) {
+      DateTime _tempDate =
+          new DateTime(element.year, element.month, element.day);
+      _calendarEvents.add(_tempDate,
+          new Event(date: _tempDate, title: element.name, id: element.id));
+    });
+  }
+
+  DatabaseEvent getEvent(DateTime date) {
+    _allEvents.forEach((element) {
+      if (element.year == date.year &&
+          element.month == date.month &&
+          element.day == date.day) {
+        return element;
+      }
+    });
+    return null;
+  }
 }
 
 class HobbyInfo extends ChangeNotifier {
@@ -37,31 +124,18 @@ class HobbyInfo extends ChangeNotifier {
   //List of all avaliable hobbies to select from
   List<String> _allHobbies = [];
 
-  //Event list for calendar
-  EventList<Event> _calendarEvents = new EventList<Event>();
-
-  //Hours for each event
-  Map<String, double> _eventTimes = new Map();
+  DatabaseEvents _events;
 
   String get getHobby {
     return _currentHobby;
-  }
-
-  EventList<Event> get getEvents {
-    return _calendarEvents;
-  }
-
-  Map<String, double> get getEventTimes {
-    return _eventTimes;
   }
 
   List<String> get getAllHobbies {
     return _allHobbies;
   }
 
-  //Constructor, loads hobbies and sets up inital values for the app
   HobbyInfo() {
-    //Database call to load databaseHobbies
+    //Pull JSON array of hobbies
     //Mock data for now
     String _databaseHobbies = "[\"Hobby1\"]";
     List _databaseList = jsonDecode(_databaseHobbies);
@@ -71,92 +145,35 @@ class HobbyInfo extends ChangeNotifier {
     });
 
     _currentHobby = _allHobbies.length == 0 ? "None" : _allHobbies[0];
-    _reloadEvents();
+    _loadEvents(_currentHobby);
   }
 
-  //Adds a hobby to the list and notifies widgets that there is a change
-  //Saves new hobby name to database if it does not already exist
-  void addHobby(String name) {
-    _allHobbies.add(name);
+  void _loadEvents(String hobby) {
+    _events = new DatabaseEvents(hobby);
+  }
 
-    //JSON string to save to database
-    String _databaseJSON = jsonEncode(_allHobbies);
-
+  void createEvent(DateTime date, double hours) {
+    _events.createEvent(date, hours);
     notifyListeners();
   }
 
-  //Updates current hobby and notifies all widgets listening to that update.
+  void updateEvent(int id, double newTime) {
+    _events.updateEvent(id, newTime);
+    notifyListeners();
+  }
+
+  void deleteEvent(int id) {
+    _events.deleteEvent(id);
+    notifyListeners();
+  }
+
   void updateHobby(String newHobby) {
     _currentHobby = newHobby;
-    _reloadEvents();
+    _events = new DatabaseEvents(newHobby);
     notifyListeners();
   }
 
-  //Called when there is a hobby update
-  //Loads that hobby info from the database
-  void _reloadEvents() {
-    _calendarEvents = new EventList<Event>();
-    _eventTimes = new Map();
-
-    //Load all event objects from the database matching _currentHobby
-    //Use a for loop over the objects returned
-    //Mock data for now
-    for (int i = 0; i < 1; i++) {
-      DatabaseEvent mockEvent = new DatabaseEvent(5, 2, 2021, 5, 'Hobby1');
-      String mockEventJson = jsonEncode(mockEvent.toJson());
-      String inputJson = mockEventJson;
-      DatabaseEvent _event = DatabaseEvent.fromJson(jsonDecode(inputJson));
-      createEvent(new DateTime(_event.year, _event.month, _event.day),
-          _event.hours, _event.name);
-    }
-
-    notifyListeners();
-  }
-
-  //Creates an event with epcified date, time and hobby
-  void createEvent(DateTime eventDate, double eventTime, String eventName) {
-    _calendarEvents.add(
-        eventDate, new Event(date: eventDate, title: eventName));
-    _eventTimes[eventName] = eventTime;
-
-    //save the newEvent json to the database
-    DatabaseEvent newEvent = new DatabaseEvent(
-        eventDate.month, eventDate.day, eventDate.year, eventTime, eventName);
-    String newEventJson = jsonEncode(newEvent);
-    notifyListeners();
-  }
-
-  //Updates an event with a new time
-  void updateEvent(DateTime dateToModify, double newTime) {
-    //Looks for events matching that date
-    var event = _calendarEvents.getEvents(dateToModify);
-
-    //If event does not exist, create it
-    if (event.length == 0) {
-      createEvent(dateToModify, newTime, _currentHobby);
-      event = _calendarEvents.getEvents(dateToModify);
-    }
-
-    //Update the time
-    _eventTimes[event[0].getTitle()] += newTime;
-
-    //update the event matching the date and title in the database using newEvent json
-    DatabaseEvent newEvent = new DatabaseEvent(
-        dateToModify.month,
-        dateToModify.day,
-        dateToModify.year,
-        _eventTimes[event[0].getTitle()],
-        event[0].getTitle());
-    String newEventJson = jsonEncode(newEvent);
-
-    notifyListeners();
-  }
-
-  bool eventExists(DateTime checkDate) {
-    var events = _calendarEvents.getEvents(checkDate);
-    if (events.length == 0) {
-      return false;
-    }
-    return true;
+  DatabaseEvent getEvent(DateTime date) {
+    return _events.getEvent(date);
   }
 }

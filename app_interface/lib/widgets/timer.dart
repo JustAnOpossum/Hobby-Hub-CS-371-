@@ -178,8 +178,8 @@ class _TimerWidgetState extends State<TimerWidget> {
   void _stopTimer() {
     if (_timer != null) {
       var today = DateTime.now();
-      hobbyState.updateEvent(new DateTime(today.year, today.month, today.day),
-          _timeTracked / 60 / 60);
+      hobbyState.updateEvent(hobbyState.getEvent(today).id,
+          _timeTracked / 60 / 60 + hobbyState.getEvent(today).hours);
       _timer.cancel();
       _timer = null;
       setState(() {
