@@ -106,7 +106,7 @@ class HobbyInfo extends ChangeNotifier {
       String mockEventJson = jsonEncode(mockEvent.toJson());
       String inputJson = mockEventJson;
       DatabaseEvent _event = DatabaseEvent.fromJson(jsonDecode(inputJson));
-      _createEvent(new DateTime(_event.year, _event.month, _event.day),
+      createEvent(new DateTime(_event.year, _event.month, _event.day),
           _event.hours, _event.name);
     }
 
@@ -114,7 +114,7 @@ class HobbyInfo extends ChangeNotifier {
   }
 
   //Creates an event with epcified date, time and hobby
-  void _createEvent(DateTime eventDate, double eventTime, String eventName) {
+  void createEvent(DateTime eventDate, double eventTime, String eventName) {
     _calendarEvents.add(
         eventDate, new Event(date: eventDate, title: eventName));
     _eventTimes[eventName] = eventTime;
@@ -123,6 +123,7 @@ class HobbyInfo extends ChangeNotifier {
     DatabaseEvent newEvent = new DatabaseEvent(
         eventDate.month, eventDate.day, eventDate.year, eventTime, eventName);
     String newEventJson = jsonEncode(newEvent);
+    notifyListeners();
   }
 
   //Updates an event with a new time
@@ -132,7 +133,7 @@ class HobbyInfo extends ChangeNotifier {
 
     //If event does not exist, create it
     if (event.length == 0) {
-      _createEvent(dateToModify, newTime, _currentHobby);
+      createEvent(dateToModify, newTime, _currentHobby);
       event = _calendarEvents.getEvents(dateToModify);
     }
 
@@ -149,5 +150,13 @@ class HobbyInfo extends ChangeNotifier {
     String newEventJson = jsonEncode(newEvent);
 
     notifyListeners();
+  }
+
+  bool eventExists(DateTime checkDate) {
+    var events = _calendarEvents.getEvents(checkDate);
+    if (events.length == 0) {
+      return false;
+    }
+    return true;
   }
 }

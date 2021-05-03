@@ -71,9 +71,8 @@ class _HomeState extends State<Home> {
               elevation: 0.0,
               title: Text(
                 '$_currentAppBarName',
-                style: TextStyle(color: Colors.black),
               ),
-              backgroundColor: Colors.white,
+              backgroundColor: myTheme.primaryColor,
               actions: <Widget>[
                 FlatButton.icon(
                     icon: Icon(Icons.person),

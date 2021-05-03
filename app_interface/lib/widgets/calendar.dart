@@ -48,9 +48,68 @@ class _CalendarState extends State<Calendar> {
             }
           });
         },
+        onDayLongPressed: (DateTime date) async {
+          String _popupString = "";
+          String _currentHobby = hobbyState.getHobby;
+          bool _eventExists = hobbyState.eventExists(date);
+          if (_eventExists) {
+            _popupString = "Update Event For $_currentHobby";
+          } else {
+            _popupString = "Create Event For $_currentHobby";
+          }
+          double hours = await asyncInputDialog(context, _popupString);
+
+          if (hours == 0) return;
+
+          if (_eventExists) {
+          } else {
+            hobbyState.createEvent(date, hours, hobbyState.getHobby);
+          }
+        },
         selectedDateTime: _currentDate,
         markedDatesMap: hobbyState.getEvents,
       ),
     );
   }
+}
+
+Future asyncInputDialog(BuildContext context, String text) async {
+  double hours = 0;
+  return showDialog(
+    context: context,
+    barrierDismissible:
+        false, // dialog is dismissible with a tap on the barrier
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text(text),
+        content: new Row(
+          children: [
+            new Expanded(
+                child: new TextField(
+              autofocus: true,
+              decoration:
+                  new InputDecoration(labelText: 'Hours', hintText: 'ex. 5'),
+              onChanged: (value) {
+                hours = double.parse(value);
+              },
+            ))
+          ],
+        ),
+        actions: [
+          FlatButton(
+            child: Text('Save'),
+            onPressed: () {
+              Navigator.of(context).pop(hours);
+            },
+          ),
+          FlatButton(
+            child: Text('Cancel'),
+            onPressed: () {
+              Navigator.of(context).pop(hours);
+            },
+          ),
+        ],
+      );
+    },
+  );
 }
