@@ -58,7 +58,7 @@ class _HomeState extends State<Home> {
     "Home",
     "Timer",
     "Calendar",
-    "Metronome"
+    "Metronome",
   ];
 
   final AuthService _auth = AuthService();

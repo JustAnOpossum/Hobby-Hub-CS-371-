@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hobby_hub/models/userData.dart';
+import '../models/user.dart';
 import 'package:hobby_hub/widgets/authenticate.dart';
 import 'package:provider/provider.dart';
 
