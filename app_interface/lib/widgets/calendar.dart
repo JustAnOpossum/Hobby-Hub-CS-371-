@@ -27,7 +27,7 @@ class _CalendarState extends State<Calendar> {
             //Goes through the events and adds them to the list
             events.forEach((event) {
               String title = event.title;
-              double hours = hobbyState.getEventTimes[event.getTitle()];
+              double hours = hobbyState.getEvent(event.date).hours;
               _modalList.add(new Text(
                 '$title: $hours Hours',
                 style: TextStyle(fontSize: 40),
@@ -51,7 +51,8 @@ class _CalendarState extends State<Calendar> {
         onDayLongPressed: (DateTime date) async {
           String _popupString = "";
           String _currentHobby = hobbyState.getHobby;
-          bool _eventExists = hobbyState.eventExists(date);
+          bool _eventExists =
+              (hobbyState.getEvent(date) == null) ? false : true;
           if (_eventExists) {
             _popupString = "Update Event For $_currentHobby";
           } else {
@@ -63,7 +64,7 @@ class _CalendarState extends State<Calendar> {
 
           if (_eventExists) {
           } else {
-            hobbyState.createEvent(date, hours, hobbyState.getHobby);
+            hobbyState.createEvent(date, hours);
           }
         },
         selectedDateTime: _currentDate,

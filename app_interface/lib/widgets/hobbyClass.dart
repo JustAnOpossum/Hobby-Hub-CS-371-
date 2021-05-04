@@ -59,6 +59,7 @@ class DatabaseEvents {
     //Load all events from database matching _currentHobby and store them in _allEvents
     //Mock data for now
     _allEvents.add(new DatabaseEvent(5, 3, 2021, 5, "Hobby1", 0));
+    _createCalendarEvents();
   }
 
   void _saveEvents() {
@@ -67,7 +68,7 @@ class DatabaseEvents {
 
   void createEvent(DateTime date, double hours) {
     DatabaseEvent _newEvent = new DatabaseEvent(date.month, date.day, date.year,
-        hours, _currentHobby, _allEvents[_allEvents.length].id + 1);
+        hours, _currentHobby, _allEvents.length + 1);
     _allEvents.add(_newEvent);
 
     _saveEvents();
@@ -78,6 +79,7 @@ class DatabaseEvents {
     _allEvents.forEach((element) {
       if (element.id == id) {
         element.hours = newTime;
+        return;
       }
     });
 
@@ -107,14 +109,15 @@ class DatabaseEvents {
   }
 
   DatabaseEvent getEvent(DateTime date) {
+    DatabaseEvent _findEvent;
     _allEvents.forEach((element) {
       if (element.year == date.year &&
           element.month == date.month &&
           element.day == date.day) {
-        return element;
+        _findEvent = element;
       }
     });
-    return null;
+    return _findEvent;
   }
 }
 
@@ -132,6 +135,10 @@ class HobbyInfo extends ChangeNotifier {
 
   List<String> get getAllHobbies {
     return _allHobbies;
+  }
+
+  EventList<Event> get getEvents {
+    return _events.calendarEvents;
   }
 
   HobbyInfo() {
