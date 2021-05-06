@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/classes/event_list.dart';
+import 'package:hobby_hub/models/user.dart';
 
 class DatabaseEvent {
   int month;
@@ -64,6 +65,10 @@ class DatabaseEvents {
 
   void _saveEvents() {
     //Save the list _allEvents back to the databse
+    List json;
+    _allEvents.forEach((element) {
+      json.add(element.toJson());
+    });
   }
 
   void createEvent(DateTime date, double hours) {
