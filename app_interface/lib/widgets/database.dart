@@ -12,10 +12,12 @@ class DatabaseService {
   final CollectionReference userCollection =
       FirebaseFirestore.instance.collection('users');
 
-  Future<void> updateUserData(String displayName, String email) async {
+  Future<void> updateUserData(
+      String displayName, String email, List calendarEvents) async {
     return await userCollection.doc(uid).set({
       'displayName': displayName,
       'email': email,
+      'calendarEvents': calendarEvents,
     });
   }
 
@@ -25,6 +27,7 @@ class DatabaseService {
       return Person(
         email: doc.data()['email'] ?? '',
         displayName: doc.data()['displayName'] ?? '',
+        calendarEvents: doc.data()['calendarEvents'] ?? [],
       );
     }).toList();
   }
@@ -32,9 +35,11 @@ class DatabaseService {
   // user data from snapshots
   UserData _userDataFromSnapshot(DocumentSnapshot snapshot) {
     return UserData(
-        uid: uid,
-        email: snapshot.data()['email'],
-        displayName: snapshot.data()['displayName']);
+      uid: uid,
+      email: snapshot.data()['email'],
+      displayName: snapshot.data()['displayName'],
+      calendarEvents: snapshot.data()['calendarEvents'],
+    );
   }
 
   // get user stream
