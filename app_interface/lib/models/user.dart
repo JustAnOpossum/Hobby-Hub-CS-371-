@@ -8,7 +8,7 @@ class FBUser {
 class UserData {
   final String uid;
   final String displayName;
-  List calendarEvents;
+  final List calendarEvents;
   //@required this.lastName,
   //@required this.password,
   final String email;

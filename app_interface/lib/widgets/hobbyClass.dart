@@ -1,9 +1,13 @@
 import 'dart:convert';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/classes/event_list.dart';
 import 'package:hobby_hub/models/user.dart';
+import 'package:provider/provider.dart';
+
+import 'package:hobby_hub/widgets/database.dart';
 
 class DatabaseEvent {
   int month;
@@ -44,6 +48,8 @@ class DatabaseEvent {
 class DatabaseEvents {
   List<DatabaseEvent> _allEvents = [];
   String _currentHobby;
+  String uid;
+  DatabaseService dbService = DatabaseService();
   EventList<Event> _calendarEvents = new EventList<Event>();
   Map<int, double> _eventTimes;
 
@@ -60,6 +66,7 @@ class DatabaseEvents {
     //Load all events from database matching _currentHobby and store them in _allEvents
     //Mock data for now
     _allEvents.add(new DatabaseEvent(5, 3, 2021, 5, "Hobby1", 0));
+    _allEvents.add(new DatabaseEvent(5, 4, 2021, 3, "Hobby1", 0));
     _createCalendarEvents();
   }
 
@@ -69,6 +76,8 @@ class DatabaseEvents {
     _allEvents.forEach((element) {
       json.add(element.toJson());
     });
+    dbService.updateUserData("NAME", "EMAIL",
+        json); // hardcoded data that will be overwritten--cannot implement properly at this time due to not knowing firebase query syntax and shortage of time
   }
 
   void createEvent(DateTime date, double hours) {

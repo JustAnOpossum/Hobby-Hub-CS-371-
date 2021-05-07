@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -12,10 +13,10 @@ class UserList extends StatefulWidget {
 class _UserListState extends State<UserList> {
   @override
   Widget build(BuildContext context) {
-    final users = Provider.of<QuerySnapshot>(context);
-    for (var doc in users.docs) {
-      print(doc.data);
-    }
-    return Container();
+    final users = Provider.of<List<User>>(context) ?? [];
+
+    return ListView.builder(
+      itemCount: users.length,
+    );
   }
 }
