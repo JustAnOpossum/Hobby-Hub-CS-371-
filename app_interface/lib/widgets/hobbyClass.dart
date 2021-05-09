@@ -35,14 +35,6 @@ class DatabaseEvent {
         'name': name,
         'id': id
       };
-
-  DatabaseEvent.fromJson(Map inputJson)
-      : month = inputJson['month'],
-        day = inputJson['day'],
-        year = inputJson['year'],
-        hours = inputJson['hours'],
-        name = inputJson['name'],
-        id = inputJson['id'];
 }
 
 class DatabaseEvents {
@@ -64,15 +56,25 @@ class DatabaseEvents {
   DatabaseEvents(String hobby) {
     _currentHobby = hobby;
     //Load all events from database matching _currentHobby and store them in _allEvents
-    //Mock data for now
-    _allEvents.add(new DatabaseEvent(5, 3, 2021, 5, "Hobby1", 0));
-    _allEvents.add(new DatabaseEvent(5, 4, 2021, 3, "Hobby1", 0));
+    _loadEvents();
+
+    _createCalendarEvents();
+  }
+
+  void _loadEvents() async {
+    List dbCall = await dbService.getUserData('TEMP');
+    if (dbCall.length != 0) {
+      dbCall.forEach((element) {
+        _allEvents.add(new DatabaseEvent((element['month']), element['day'],
+            element['year'], element['hours'], element['name'], element['id']));
+      });
+    }
     _createCalendarEvents();
   }
 
   void _saveEvents() {
     //Save the list _allEvents back to the databse
-    List json;
+    List json = [];
     _allEvents.forEach((element) {
       json.add(element.toJson());
     });

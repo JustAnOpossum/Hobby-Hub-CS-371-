@@ -15,10 +15,35 @@ class DatabaseService {
 
   Future<void> updateUserData(
       String displayName, String email, List calendarEvents) async {
-    return await userCollection.doc(uid).set({
-      'displayName': displayName,
-      'email': email,
-      'calendarEvents': calendarEvents,
+    return await userCollection
+        .where('email', isEqualTo: email)
+        .where('displayName', isEqualTo: displayName)
+        .get()
+        .then((value) => {
+              value.docs.forEach((element) {
+                userCollection.doc(element.id).update({
+                  'calendarEvents': calendarEvents,
+                });
+              })
+            });
+  }
+
+  Future<List> getUserData(String hobbyName) async {
+    return userCollection
+        .where('email', isEqualTo: 'EMAIL')
+        .where('displayName', isEqualTo: 'NAME')
+        .get()
+        .then((value) {
+      if (value.docs.length == 0) {
+        userCollection.doc(uid).set({
+          'displayName': 'NAME',
+          'email': 'EMAIL',
+          'calendarEvents': [],
+        });
+        return [];
+      } else {
+        return value.docs[0].data()['calendarEvents'];
+      }
     });
   }
 
