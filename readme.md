@@ -1,7 +1,7 @@
 # Hobby Hub CS 371 Project NMSU
 
 ## Info
-Currently what is working is guest login for the app and the timer page is working. Some of the design elements are nailed down and we have got our navigation around the app correct.
+Timer and calendar and metronome are fully implemented. A database to save and store events is also implemented. We do need to do some cleaning up on the database before final implementation but after that the app will be fully functional.
 
 ## Github Pages URL
 [Hobby Hub Link](https://kpbianco.github.io/)
