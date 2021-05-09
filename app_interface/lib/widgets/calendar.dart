@@ -68,7 +68,7 @@ class _CalendarState extends State<Calendar> {
           }
         },
         selectedDateTime: _currentDate,
-        markedDatesMap: hobbyState.getEvents,
+        markedDatesMap: hobbyState.calendarEvents,
       ),
     );
   }

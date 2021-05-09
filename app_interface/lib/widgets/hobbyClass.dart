@@ -37,13 +37,25 @@ class DatabaseEvent {
       };
 }
 
-class DatabaseEvents {
+class HobbyInfo extends ChangeNotifier {
+  //String for the current hobby user has selected.
+  String _currentHobby = "";
+  //List of all avaliable hobbies to select from
+  List<String> _allHobbies = [];
+
   List<DatabaseEvent> _allEvents = [];
-  String _currentHobby;
   String uid;
   DatabaseService dbService = DatabaseService();
   EventList<Event> _calendarEvents = new EventList<Event>();
   Map<int, double> _eventTimes;
+
+  String get getHobby {
+    return _currentHobby;
+  }
+
+  List<String> get getAllHobbies {
+    return _allHobbies;
+  }
 
   EventList<Event> get calendarEvents {
     return _calendarEvents;
@@ -53,16 +65,24 @@ class DatabaseEvents {
     return _eventTimes;
   }
 
-  DatabaseEvents(String hobby) {
-    _currentHobby = hobby;
-    //Load all events from database matching _currentHobby and store them in _allEvents
-    _loadEvents();
+  HobbyInfo() {
+    //Pull JSON array of hobbies
+    //Mock data for now
+    String _databaseHobbies = "[\"Hobby1\"]";
+    List _databaseList = jsonDecode(_databaseHobbies);
 
-    _createCalendarEvents();
+    _databaseList.forEach((element) {
+      _allHobbies.add(element);
+    });
+
+    _currentHobby = _allHobbies.length == 0 ? "None" : _allHobbies[0];
+
+    //Load all events from database matching _currentHobby and store them in _allEvents
+    _loadEvents('uwu');
   }
 
-  void _loadEvents() async {
-    List dbCall = await dbService.getUserData('TEMP');
+  void _loadEvents(String hobby) async {
+    List dbCall = await dbService.getUserData(hobby);
     if (dbCall.length != 0) {
       dbCall.forEach((element) {
         _allEvents.add(new DatabaseEvent((element['month']), element['day'],
@@ -70,16 +90,6 @@ class DatabaseEvents {
       });
     }
     _createCalendarEvents();
-  }
-
-  void _saveEvents() {
-    //Save the list _allEvents back to the databse
-    List json = [];
-    _allEvents.forEach((element) {
-      json.add(element.toJson());
-    });
-    dbService.updateUserData("NAME", "EMAIL",
-        json); // hardcoded data that will be overwritten--cannot implement properly at this time due to not knowing firebase query syntax and shortage of time
   }
 
   void createEvent(DateTime date, double hours) {
@@ -114,14 +124,10 @@ class DatabaseEvents {
     _createCalendarEvents();
   }
 
-  void _createCalendarEvents() {
-    _calendarEvents = new EventList<Event>();
-    _allEvents.forEach((element) {
-      DateTime _tempDate =
-          new DateTime(element.year, element.month, element.day);
-      _calendarEvents.add(_tempDate,
-          new Event(date: _tempDate, title: element.name, id: element.id));
-    });
+  void updateHobby(String newHobby) {
+    _currentHobby = newHobby;
+    _loadEvents(newHobby);
+    notifyListeners();
   }
 
   DatabaseEvent getEvent(DateTime date) {
@@ -135,68 +141,25 @@ class DatabaseEvents {
     });
     return _findEvent;
   }
-}
 
-class HobbyInfo extends ChangeNotifier {
-  //String for the current hobby user has selected.
-  String _currentHobby = "";
-  //List of all avaliable hobbies to select from
-  List<String> _allHobbies = [];
-
-  DatabaseEvents _events;
-
-  String get getHobby {
-    return _currentHobby;
-  }
-
-  List<String> get getAllHobbies {
-    return _allHobbies;
-  }
-
-  EventList<Event> get getEvents {
-    return _events.calendarEvents;
-  }
-
-  HobbyInfo() {
-    //Pull JSON array of hobbies
-    //Mock data for now
-    String _databaseHobbies = "[\"Hobby1\"]";
-    List _databaseList = jsonDecode(_databaseHobbies);
-
-    _databaseList.forEach((element) {
-      _allHobbies.add(element);
+  void _createCalendarEvents() {
+    _calendarEvents = new EventList<Event>();
+    _allEvents.forEach((element) {
+      DateTime _tempDate =
+          new DateTime(element.year, element.month, element.day);
+      _calendarEvents.add(_tempDate,
+          new Event(date: _tempDate, title: element.name, id: element.id));
     });
-
-    _currentHobby = _allHobbies.length == 0 ? "None" : _allHobbies[0];
-    _loadEvents(_currentHobby);
-  }
-
-  void _loadEvents(String hobby) {
-    _events = new DatabaseEvents(hobby);
-  }
-
-  void createEvent(DateTime date, double hours) {
-    _events.createEvent(date, hours);
     notifyListeners();
   }
 
-  void updateEvent(int id, double newTime) {
-    _events.updateEvent(id, newTime);
-    notifyListeners();
-  }
-
-  void deleteEvent(int id) {
-    _events.deleteEvent(id);
-    notifyListeners();
-  }
-
-  void updateHobby(String newHobby) {
-    _currentHobby = newHobby;
-    _events = new DatabaseEvents(newHobby);
-    notifyListeners();
-  }
-
-  DatabaseEvent getEvent(DateTime date) {
-    return _events.getEvent(date);
+  void _saveEvents() {
+    //Save the list _allEvents back to the databse
+    List json = [];
+    _allEvents.forEach((element) {
+      json.add(element.toJson());
+    });
+    dbService.updateUserData("NAME", "EMAIL",
+        json); // hardcoded data that will be overwritten--cannot implement properly at this time due to not knowing firebase query syntax and shortage of time
   }
 }
