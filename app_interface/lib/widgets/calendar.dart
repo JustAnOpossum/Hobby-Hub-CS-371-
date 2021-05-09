@@ -4,6 +4,7 @@ import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:provider/provider.dart';
 import './hobbyClass.dart';
+import "package:intl/intl.dart";
 
 class Calendar extends StatefulWidget {
   @override
@@ -28,8 +29,9 @@ class _CalendarState extends State<Calendar> {
             events.forEach((event) {
               String title = event.title;
               double hours = hobbyState.getEvent(event.date).hours;
+              var formatHours = hours.toStringAsFixed(2);
               _modalList.add(new Text(
-                '$title: $hours Hours',
+                '$title: $formatHours Hours',
                 style: TextStyle(fontSize: 40),
               ));
             });
@@ -48,6 +50,7 @@ class _CalendarState extends State<Calendar> {
             }
           });
         },
+        //UI for the user to be able to delete and create events
         onDayLongPressed: (DateTime date) async {
           String _popupString = "";
           String _currentHobby = hobbyState.getHobby;
@@ -62,9 +65,17 @@ class _CalendarState extends State<Calendar> {
 
           if (hours == 0) return;
 
+          //Case for updating the event
           if (_eventExists) {
+            hobbyState.updateEvent(hobbyState.getEvent(date).id, hours);
           } else {
+            //Else the new event is created
             hobbyState.createEvent(date, hours);
+          }
+
+          //Deletes the event
+          if (hours == -1) {
+            hobbyState.deleteEvent(hobbyState.getEvent(date).id);
           }
         },
         selectedDateTime: _currentDate,
@@ -74,12 +85,12 @@ class _CalendarState extends State<Calendar> {
   }
 }
 
+//Popup whenever the user does a long press on the calendar
 Future asyncInputDialog(BuildContext context, String text) async {
   double hours = 0;
   return showDialog(
     context: context,
-    barrierDismissible:
-        false, // dialog is dismissible with a tap on the barrier
+    barrierDismissible: false,
     builder: (BuildContext context) {
       return AlertDialog(
         title: Text(text),
@@ -106,6 +117,13 @@ Future asyncInputDialog(BuildContext context, String text) async {
           FlatButton(
             child: Text('Cancel'),
             onPressed: () {
+              Navigator.of(context).pop(hours);
+            },
+          ),
+          FlatButton(
+            child: Text('Delete'),
+            onPressed: () {
+              hours = -1;
               Navigator.of(context).pop(hours);
             },
           ),

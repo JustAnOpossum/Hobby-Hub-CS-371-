@@ -42,11 +42,15 @@ class HobbyInfo extends ChangeNotifier {
   String _currentHobby = "";
   //List of all avaliable hobbies to select from
   List<String> _allHobbies = [];
-
+  //Event List for the calendar
   List<DatabaseEvent> _allEvents = [];
+  //UID for databse
   String uid;
+  //Database service used for saving the event data
   DatabaseService dbService = DatabaseService();
+  //List of events that the calendar can understand
   EventList<Event> _calendarEvents = new EventList<Event>();
+  //Event times so that hours can be displayed
   Map<int, double> _eventTimes;
 
   String get getHobby {
@@ -78,9 +82,10 @@ class HobbyInfo extends ChangeNotifier {
     _currentHobby = _allHobbies.length == 0 ? "None" : _allHobbies[0];
 
     //Load all events from database matching _currentHobby and store them in _allEvents
-    _loadEvents('uwu');
+    _loadEvents('TEMP');
   }
 
+  //Loads events from the database for this hobby
   void _loadEvents(String hobby) async {
     List dbCall = await dbService.getUserData(hobby);
     if (dbCall.length != 0) {
@@ -92,6 +97,7 @@ class HobbyInfo extends ChangeNotifier {
     _createCalendarEvents();
   }
 
+  //Creates an event, called from the timer or UI calendar
   void createEvent(DateTime date, double hours) {
     DatabaseEvent _newEvent = new DatabaseEvent(date.month, date.day, date.year,
         hours, _currentHobby, _allEvents.length + 1);
@@ -101,6 +107,7 @@ class HobbyInfo extends ChangeNotifier {
     _createCalendarEvents();
   }
 
+  //Updates the time on a specific event
   void updateEvent(int id, double newTime) {
     _allEvents.forEach((element) {
       if (element.id == id) {
@@ -113,23 +120,28 @@ class HobbyInfo extends ChangeNotifier {
     _createCalendarEvents();
   }
 
+  //Deletes an event
   void deleteEvent(int id) {
+    var itemToRemove;
     _allEvents.forEach((element) {
       if (element.id == id) {
-        _allEvents.remove(element);
+        itemToRemove = element;
       }
     });
+    _allEvents.remove(itemToRemove);
 
     _saveEvents();
     _createCalendarEvents();
   }
 
+  //Updates the currently selected hobby
   void updateHobby(String newHobby) {
     _currentHobby = newHobby;
     _loadEvents(newHobby);
     notifyListeners();
   }
 
+  //Get's an event matching date
   DatabaseEvent getEvent(DateTime date) {
     DatabaseEvent _findEvent;
     _allEvents.forEach((element) {
@@ -142,6 +154,7 @@ class HobbyInfo extends ChangeNotifier {
     return _findEvent;
   }
 
+  //Creates the calendar events from the _allEvents list
   void _createCalendarEvents() {
     _calendarEvents = new EventList<Event>();
     _allEvents.forEach((element) {
@@ -153,6 +166,7 @@ class HobbyInfo extends ChangeNotifier {
     notifyListeners();
   }
 
+  //Saves events to the database
   void _saveEvents() {
     //Save the list _allEvents back to the databse
     List json = [];
