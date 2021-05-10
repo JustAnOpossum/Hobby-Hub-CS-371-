@@ -9,6 +9,8 @@ import '../theme.dart';
 import '../shared/loading.dart';
 import '../widgets/homePage.dart';
 import './hobbyClass.dart';
+import '../widgets/Notes.dart';
+import '../widgets/todolist.dart';
 
 void main() {
   runApp(MyApp());
@@ -52,6 +54,7 @@ class _HomeState extends State<Home> {
     TimerPage(),
     Calendar(),
     MetronomeControl(),
+    NotesPage(),
   ];
 
   static List<String> _appBarNames = <String>[
@@ -59,6 +62,7 @@ class _HomeState extends State<Home> {
     "Timer",
     "Calendar",
     "Metronome",
+    "Notes",
   ];
 
   final AuthService _auth = AuthService();
@@ -105,6 +109,10 @@ class _HomeState extends State<Home> {
                     label: 'Calendar'),
                 BottomNavigationBarItem(
                     icon: Icon(Icons.music_note), label: 'Metronome'),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.archive), label: 'Notes'),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.archive), label: 'To do List'),
               ],
               onTap: _onItemTapped,
             ),
