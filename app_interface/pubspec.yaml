@@ -25,12 +25,9 @@ dependencies:
   flutter_local_notifications:
   flutter_launcher_icons:
   flutter_native_splash:
-<<<<<<< HEAD
   auto_size_text:
-  cloud_firestore:
-=======
+    
   cloud_firestore: ^1.0.7
->>>>>>> parent of 946a93f (add note features)
   flutter:
     sdk: flutter
   firebase_core: ^1.1.0

@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../widgets/metronome.dart';
 import '../widgets/timer.dart';
 import '../widgets/calendar.dart';
+import '../widgets/Notes.dart';
 import '../theme.dart';
 import '../shared/loading.dart';
 import '../widgets/homePage.dart';
@@ -52,6 +53,7 @@ class _HomeState extends State<Home> {
     TimerPage(),
     Calendar(),
     MetronomeControl(),
+    NotesPage(),
   ];
 
   static List<String> _appBarNames = <String>[
@@ -59,6 +61,7 @@ class _HomeState extends State<Home> {
     "Timer",
     "Calendar",
     "Metronome",
+    "Notes",
   ];
 
   final AuthService _auth = AuthService();
@@ -105,6 +108,8 @@ class _HomeState extends State<Home> {
                     label: 'Calendar'),
                 BottomNavigationBarItem(
                     icon: Icon(Icons.music_note), label: 'Metronome'),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.edit_rounded), label: 'Notes'),
               ],
               onTap: _onItemTapped,
             ),
