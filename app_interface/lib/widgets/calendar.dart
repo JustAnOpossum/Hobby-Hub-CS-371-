@@ -4,7 +4,6 @@ import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:provider/provider.dart';
 import './hobbyClass.dart';
-import "package:intl/intl.dart";
 
 class Calendar extends StatefulWidget {
   @override
@@ -63,6 +62,12 @@ class _CalendarState extends State<Calendar> {
           }
           double hours = await asyncInputDialog(context, _popupString);
 
+          //Deletes the event
+          if (hours == -1) {
+            hobbyState.deleteEvent(hobbyState.getEvent(date).id);
+            return;
+          }
+
           if (hours == 0) return;
 
           //Case for updating the event
@@ -71,11 +76,6 @@ class _CalendarState extends State<Calendar> {
           } else {
             //Else the new event is created
             hobbyState.createEvent(date, hours);
-          }
-
-          //Deletes the event
-          if (hours == -1) {
-            hobbyState.deleteEvent(hobbyState.getEvent(date).id);
           }
         },
         selectedDateTime: _currentDate,

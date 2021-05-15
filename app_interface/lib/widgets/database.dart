@@ -1,12 +1,11 @@
-import 'package:flutter/material.dart';
 import 'package:hobby_hub/models/person.dart';
-import 'package:hobby_hub/widgets/user_list.dart';
 
 import '../models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DatabaseService {
   final String uid;
+  String hobby;
   DatabaseService({this.uid});
 
   // collection reference
@@ -22,13 +21,14 @@ class DatabaseService {
         .then((value) => {
               value.docs.forEach((element) {
                 userCollection.doc(element.id).update({
-                  'calendarEvents': calendarEvents,
+                  hobby: calendarEvents,
                 });
               })
             });
   }
 
   Future<List> getUserData(String hobbyName) async {
+    hobby = hobbyName;
     return userCollection
         .where('email', isEqualTo: 'EMAIL')
         .where('displayName', isEqualTo: 'NAME')
@@ -38,11 +38,12 @@ class DatabaseService {
         userCollection.doc(uid).set({
           'displayName': 'NAME',
           'email': 'EMAIL',
-          'calendarEvents': [],
         });
         return [];
+      } else if (value.docs[0].data()[hobbyName] == null) {
+        return [];
       } else {
-        return value.docs[0].data()['calendarEvents'];
+        return value.docs[0].data()[hobbyName];
       }
     });
   }

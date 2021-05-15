@@ -243,10 +243,6 @@ class _TimerWidgetState extends State<TimerWidget> {
             style: ElevatedButton.styleFrom(primary: Colors.red),
             onPressed: () => _resetButtonPressed(),
             child: Text('Reset Timer')),
-        ElevatedButton(
-            style: ElevatedButton.styleFrom(primary: Colors.red),
-            onPressed: () => _sendNotfication(),
-            child: Text('Test Notification')),
         Container(
           height: 20,
         ),

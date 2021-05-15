@@ -1,11 +1,8 @@
 import 'dart:convert';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/classes/event_list.dart';
-import 'package:hobby_hub/models/user.dart';
-import 'package:provider/provider.dart';
 
 import 'package:hobby_hub/widgets/database.dart';
 
@@ -71,8 +68,8 @@ class HobbyInfo extends ChangeNotifier {
 
   HobbyInfo() {
     //Pull JSON array of hobbies
-    //Mock data for now
-    String _databaseHobbies = "[\"Hobby1\"]";
+    //Mock data for now (Since hobby selector was not implimented due to other team member)
+    String _databaseHobbies = "[\"Art\",\"Instrument\"]";
     List _databaseList = jsonDecode(_databaseHobbies);
 
     _databaseList.forEach((element) {
@@ -82,11 +79,12 @@ class HobbyInfo extends ChangeNotifier {
     _currentHobby = _allHobbies.length == 0 ? "None" : _allHobbies[0];
 
     //Load all events from database matching _currentHobby and store them in _allEvents
-    _loadEvents('TEMP');
+    _loadEvents(_currentHobby);
   }
 
   //Loads events from the database for this hobby
   void _loadEvents(String hobby) async {
+    _allEvents = [];
     List dbCall = await dbService.getUserData(hobby);
     if (dbCall.length != 0) {
       dbCall.forEach((element) {
@@ -135,10 +133,9 @@ class HobbyInfo extends ChangeNotifier {
   }
 
   //Updates the currently selected hobby
-  void updateHobby(String newHobby) {
+  void updateHobby(String newHobby) async {
     _currentHobby = newHobby;
     _loadEvents(newHobby);
-    notifyListeners();
   }
 
   //Get's an event matching date
