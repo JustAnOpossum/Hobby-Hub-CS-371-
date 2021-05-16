@@ -1,3 +1,0 @@
-I do the note.dart stuff and plan to develop the app.But I add the Note.dart to late, so we can not get it for D4. 
-During this project, I drop my laptop and I lost all my file. I have studied a lot about flutter from this project.
-Camero and Kian do the most of the job.  
