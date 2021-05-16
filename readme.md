@@ -1,6 +1,6 @@
 # Hobby Hub CS 371 Project NMSU
 
-<img src="https://i.imgur.com/YbMwfIe.png" style="width:15em;border-radius:50%"></img>
+<img src="https://i.imgur.com/vW8AYq3.png"></img>
 
 # About
 This is an app to track your hobbies. It has a calendar with event tracking. A pomodoro timer, and a metronome to help you keep track of your hobbies.
